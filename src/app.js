@@ -1,10 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { hot } from 'react-hot-loader'
+import { Button } from 'antd'
+import 'antd/dist/antd.css'
 
 const App = () => {
   return (
-    <h1>HMS</h1>
+    <Button type="primary">HMS</Button>
   );
 };
 export default hot(module)(App);
