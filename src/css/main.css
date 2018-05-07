@@ -35,3 +35,94 @@ a:active{
 .nav-item:hover{
     color: #61dafb;
 }
+.container{
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.title{
+    padding-left: 20px;
+    border-bottom: 1px solid #ccc;
+}
+
+
+/* 内边距外边距格式 */
+.pd0{padding: 0}
+.pd5{padding: 5px}
+.pd10{padding: 10px}
+.pd15{padding: 15px}
+.pd20{padding: 20px}
+.pd25{padding: 25px}
+.pd30{padding: 30px}
+
+.pdt0{padding-top: 0}
+.pdt5{padding-top: 5px}
+.pdt10{padding-top: 10px}
+.pdt15{padding-top: 15px}
+.pdt20{padding-top: 20px}
+.pdt25{padding-top: 25px}
+.pdt30{padding-top: 30px}
+
+.pdr0{padding-right: 0}
+.pdr5{padding-right: 5px}
+.pdr10{padding-right: 10px}
+.pdr15{padding-right: 15px}
+.pdr20{padding-right: 20px}
+.pdr25{padding-right: 25px}
+.pdr30{padding-right: 30px}
+
+.pdb0{padding-bottom: 0}
+.pdb5{padding-bottom: 5px}
+.pdb10{padding-bottom: 10px}
+.pdb15{padding-bottom: 15px}
+.pdb20{padding-bottom: 20px}
+.pdb25{padding-bottom: 25px}
+.pdb30{padding-bottom: 30px}
+
+.pdl0{padding-left: 0}
+.pdl5{padding-left: 5px}
+.pdl10{padding-left: 10px}
+.pdl15{padding-left: 15px}
+.pdl20{padding-left: 20px}
+.pdl25{padding-left: 25px}
+.pdl30{padding-left: 30px}
+
+.mg0{margin: 0}
+.mg5{margin: 5px}
+.mg10{margin: 10px}
+.mg15{margin: 15px}
+.mg20{margin: 20px}
+.mg25{margin: 25px}
+.mg30{margin: 30px}
+
+.mgt0{margin-top: 0}
+.mgt5{margin-top: 5px}
+.mgt10{margin-top: 10px}
+.mgt15{margin-top: 15px}
+.mgt20{margin-top: 20px}
+.mgt25{margin-top: 25px}
+.mgt30{margin-top: 30px}
+
+.mgr0{margin-right: 0}
+.mgr5{margin-right: 5px}
+.mgr10{margin-right: 10px}
+.mgr15{margin-right: 15px}
+.mgr20{margin-right: 20px}
+.mgr25{margin-right: 25px}
+.mgr30{margin-right: 30px}
+
+.mgb0{margin-bottom: 0}
+.mgb5{margin-bottom: 5px}
+.mgb10{margin-bottom: 10px}
+.mgb15{margin-bottom: 15px}
+.mgb20{margin-bottom: 20px}
+.mgb25{margin-bottom: 25px}
+.mgb30{margin-bottom: 30px}
+
+.mgl0{margin-left: 0}
+.mgl5{margin-left: 5px}
+.mgl10{margin-left: 10px}
+.mgl15{margin-left: 15px}
+.mgl20{margin-left: 20px}
+.mgl25{margin-left: 25px}
+.mgl30{margin-left: 30px}

@@ -28,6 +28,7 @@
     "antd": "^3.4.5",
     "babel-plugin-import": "^1.7.0",
     "css-loader": "^0.28.11",
+    "echarts": "^4.1.0",
     "react-router-dom": "^4.2.2",
     "style-loader": "^0.21.0"
   }
