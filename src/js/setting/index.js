@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+// 客房设置功能（客房信息，实际价格，实际折扣，房间状态，是否可用）
 class Setting extends React.Component {
   render () {
     return (

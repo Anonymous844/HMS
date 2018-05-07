@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+// 客户管理功能
 class Customer extends React.Component {
   render () {
     return (

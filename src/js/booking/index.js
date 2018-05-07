@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+// 预定中心
 class Booking extends React.Component {
   render () {
     return (

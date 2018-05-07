@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+// 入住登记和结账功能
 class CheckIn extends React.Component {
   render () {
     return (

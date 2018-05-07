@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+// 业务统计报表（住宿率|柱状图）
 class Home extends React.Component {
   render () {
     return (
