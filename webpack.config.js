@@ -36,10 +36,11 @@ module.exports = {
         new webpack.HotModuleReplacementPlugin()
     ],
     devServer: {
+        historyApiFallback: true,
         contentBase: path.join(__dirname, "dist"),
         compress: true,
         port: 8033,
-        host: "127.0.0.1",
+        host: "localhost",
         hot: true
     }
 };

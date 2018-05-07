@@ -1,0 +1,37 @@
+a{
+    text-decoration: none;
+    color: #fff;
+    display: inline-block;
+    padding: 20px 20px 15px 20px;
+}
+a:link{
+    text-decoration: none;
+}
+a:visited{
+    text-decoration: none;
+}
+a:hover{
+    text-decoration: none;
+    color: #61dafb;
+}
+a:active{
+    text-decoration: none;
+    color: #61dafb;
+}
+.active{
+    color: #61dafb;
+    border-bottom: 5px solid #61dafb;
+}
+.nav{
+    list-style: none;
+    background-color: #20232a;
+    overflow: hidden;
+}
+.nav-item{
+    font-size: 20px;
+    float: left;
+    cursor: pointer;
+}
+.nav-item:hover{
+    color: #61dafb;
+}
