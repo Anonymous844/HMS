@@ -1,12 +1,12 @@
-a{
+.nav-item>a{
     color: #fff;
     display: inline-block;
     padding: 20px 20px 15px 20px;
 }
-a:link{
+.nav-item>a:link{
     text-decoration: none;
 }
-a:hover, a:active{
+.nav-item>a:hover, .nav-item>a:active{
     color: #61dafb;
 }
 .active{
