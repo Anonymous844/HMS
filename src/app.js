@@ -5,11 +5,10 @@ import {
   Route,
   Link
 } from 'react-router-dom'
+import routes from './js/router'
 import { hot } from 'react-hot-loader'
-import { Button } from 'antd'
 import 'antd/dist/antd.css'
 import './css/main.css'
-import routes from './js/router'
 
 
 class App extends React.Component {
