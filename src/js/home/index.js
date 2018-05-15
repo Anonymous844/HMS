@@ -20,7 +20,7 @@ class Home extends React.Component {
     let myChart = echarts.init(document.getElementById('main'))
     let options = {
       title: {
-        text: '月入住率',
+        text: this.state.year + '月入住率',
         left: 'center'
       },
       tooltip: {
@@ -47,6 +47,7 @@ class Home extends React.Component {
   }
   changeYear (value) {
     this.setState({year: value})
+    setTimeout(() => this.getBar())
     // 请求
   }
   render () {

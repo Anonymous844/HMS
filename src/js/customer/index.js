@@ -16,19 +16,19 @@ class Customer extends React.Component {
       },{
         key: '2',
         name: 'adam',
-        age: '32',
+        age: '33',
         telNumber: '13112345678',
         gender: 'male',
       },{
         key: '3',
         name: 'adam',
-        age: '32',
+        age: '34',
         telNumber: '13112345678',
         gender: 'male',
       },{
         key: '4',
         name: 'adam',
-        age: '32',
+        age: '35',
         telNumber: '13112345678',
         gender: 'male',
       }],
@@ -52,9 +52,14 @@ class Customer extends React.Component {
         title: '操作',
         dataIndex: 'operation',
         key: 'operation',
-        render: () => <Button type='danger'>删除</Button>
+        render: (text, record, index) => <Button type='danger' onClick={() => this.delFunc(index)}>删除</Button>
       }]
     }
+  }
+  delFunc (index) {
+    this.state.userInfo.splice(index, 1)
+    let arr = this.state.userInfo
+    this.setState({userInfo: arr})
   }
   render () {
     return (
