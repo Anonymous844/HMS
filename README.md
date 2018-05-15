@@ -1,5 +1,5 @@
 # HMS
-Hotel Managment System
+Hotel Management System
 
 
 1、 <code>npm install</code>
