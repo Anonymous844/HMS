@@ -34,7 +34,7 @@ class App extends React.Component {
             ))}
           </ul>
           {routes.map((value, index) => (
-            <Route exact path={value.path} component={value.component} key={index} />
+            <Route exact path={value.path} component={value.component} key={index}/>
           ))}
         </div>
       </Router>

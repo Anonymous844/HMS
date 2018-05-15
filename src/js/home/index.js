@@ -62,7 +62,7 @@ class Home extends React.Component {
             <Option value="2015">2015</Option>
             <Option value="2014">2014</Option>
           </Select>
-          <div id='main' style={{width: 600, height: 400}}></div>
+          <div id='main' style={{width: '100%', height: 400}}></div>
         </div>
       </div>
     )
