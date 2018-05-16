@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import echarts from 'echarts'
-import { Select } from 'antd'
+import { Select, message } from 'antd'
 const Option = Select.Option
 
 // 业务统计报表（住宿率|柱状图）
@@ -12,6 +12,7 @@ class Home extends React.Component {
       year: '2018',
       rate: [80, 90, 70, 60, 50, 90, 80, 70, 90, 50, 80, 60]
     }
+    this.getRate()
   }
   componentDidMount () {
     this.getBar()
@@ -20,7 +21,7 @@ class Home extends React.Component {
     let myChart = echarts.init(document.getElementById('main'))
     let options = {
       title: {
-        text: this.state.year + '月入住率',
+        text: this.state.year + '年每月入住率',
         left: 'center'
       },
       tooltip: {
@@ -45,10 +46,28 @@ class Home extends React.Component {
     }
     myChart.setOption(options)
   }
+  getRate () {
+    fetch('/home/rate?year=' + this.state.year, {
+      method: 'get',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+    })
+    .then(res => {
+      if (!res.code) {
+        message.error('500 Internal Server Error')
+      } else if (res.code === 0) {
+        message.error(res.msg)
+      } else if (res.code === 1) {
+        this.setState({rate: res.rate})
+      }
+    })
+    setTimeout(() => this.getBar())
+  }
   changeYear (value) {
     this.setState({year: value})
-    setTimeout(() => this.getBar())
-    // 请求
+    setTimeout(() => this.getRate())
   }
   render () {
     return (
