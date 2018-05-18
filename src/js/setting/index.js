@@ -43,7 +43,7 @@ class Setting extends React.Component {
         )
       }],
       loading: true,
-      roomList: [{],
+      roomList: [],
       roomObj: {}
     }
     this.getList()
