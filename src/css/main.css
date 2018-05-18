@@ -43,6 +43,40 @@
 .clearfix{
     overflow: hidden;
 }
+/* 登录页 */
+.loginContainer{
+    margin: 0 auto;
+}
+.loginTitle{
+    text-align: center;
+    font-weight: 300;
+    font-size: 24px;
+    padding-top: 100px;
+}
+.loginBox{
+    margin: 0 auto;
+    width: 300px;
+    border: 1px solid #cccccc;
+    border-radius: 3px;
+    background-color: #f9f9f9; 
+    padding: 20px;
+}
+.loginButton{
+    width: 100%;
+    font-size: 16px;
+    color: #ffffff;
+    background-color: #28a745;
+}
+.loginButton:link, .loginButton:visited, .loginButton:hover,.loginButton:active, .loginButton:focus{
+    color: #ffffff;
+    background-color: #269f42;
+}
+.copyright{
+    text-align: center;
+}
+.logout{
+    float: right;
+}
 
 
 /* 内边距外边距格式 */

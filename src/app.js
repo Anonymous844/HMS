@@ -19,12 +19,29 @@ class App extends React.Component {
       defaultPath: location.pathname,
       loginEnable: false
     }
+    this.logout = this.logout.bind(this)
   }
   changeIndex (path) {
     this.setState({defaultPath: path})
+    console.log(document.cookie)
   }
   changeState () {
-    this.setState({loginEnable: true})
+    this.setState({loginEnable: !this.state.loginEnable})
+  }
+  logout () {
+    document.cookie = 'loginEnable=false'
+    this.isLogin()
+  }
+  isLogin () {
+    let str = document.cookie
+    if (str && str === 'loginEnable=false') {
+      this.setState({loginEnable: false})
+    } else if (str && str === 'loginEnable=true') {
+      this.setState({loginEnable: true})
+    }
+  }
+  componentWillMount () {
+    this.isLogin()
   }
   render () {
     return (
@@ -39,6 +56,7 @@ class App extends React.Component {
                   <Link to={value.path}>{value.name}</Link>
                 </li>
               ))}
+              <li className='nav-item logout'><a onClick={this.logout}>退出</a></li>
             </ul>
             {routes.map((value, index) => (
               <Route exact path={value.path} component={value.component} key={index}/>
