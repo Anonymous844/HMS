@@ -25,7 +25,7 @@ class Price extends React.Component {
         align: 'center'
       },{
         title: '计时最低价格',
-        dataIndex: 'timeLeft',
+        dataIndex: 'timeLeft_cn',
         width: '20%',
         align: 'center'
       },{
@@ -38,20 +38,8 @@ class Price extends React.Component {
         )
       }],
       loading: true,
-      typeList: [{
-        key: 1,
-        type: 1,
-        typeName: '标间',
-        bPrice: 300,
-        bDiscount: 0.8,
-        timeLeft: 86400
-      }],
-      typeObj: {
-        type: 0,
-        bPrice: '',
-        bDiscount: '',
-        timeLeft: 0
-      }
+      typeList: [],
+      typeObj: {}
     }
     this.getList()
   }
@@ -72,6 +60,7 @@ class Price extends React.Component {
         let details = res.details
         details.forEach(d => {
           d.key = d.type
+          d.timeLeft_cn = d.timeLeft + '秒'
           d.typeName = d.type === 1 ? '标间' : (d.type === 2 ? '大床房' : '总统套房')
         })
         this.setState({typeList: details})

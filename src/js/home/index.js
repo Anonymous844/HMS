@@ -10,7 +10,7 @@ class Home extends React.Component {
     super(props)
     this.state = {
       year: '2018',
-      rate: [80, 90, 70, 60, 50, 90, 80, 70, 90, 50, 80, 60]
+      rate: []
     }
     this.getRate()
   }

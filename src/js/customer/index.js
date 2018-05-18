@@ -19,7 +19,7 @@ class Customer extends React.Component {
         align: 'center'
       },{
         title: '性别',
-        dataIndex: 'gender',
+        dataIndex: 'gender_cn',
         width: '20%',
         align: 'center'
       },{
@@ -41,14 +41,7 @@ class Customer extends React.Component {
       }],
       loading: true,
       userList: [],
-      user: {
-        userId: '',
-        userName: '',
-        gender: '',
-        age: '',
-        telNum: '',
-        isDelete: ''
-      }
+      user: {}
     }
     this.getList()
   }
@@ -71,6 +64,7 @@ class Customer extends React.Component {
         res.details.forEach(d => {
           if (d.isDelete) {
             d.key = d.userId
+            d.gender_cn = d.gender === 0 ? '女性' : '男性'
             details.push(d)
           }
         })
@@ -140,8 +134,8 @@ class Customer extends React.Component {
             <label className='pd5'>客户性别</label>
             <Select size='small' style={{width: '60%'}} defaultValue={this.state.user.gender}
                    onChange={(value) => user.gender = value}>
-              <Select.Option value="0">女</Select.Option>
-              <Select.Option value="1">男</Select.Option>
+              <Select.Option value={0}>女</Select.Option>
+              <Select.Option value={1}>男</Select.Option>
             </Select>
           </div>
           <div className='mgb5'>

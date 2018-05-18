@@ -25,11 +25,11 @@ class Setting extends React.Component {
         align: 'center'
       },{
         title: '房间状态',
-        dataIndex: 'status',
+        dataIndex: 'status_cn',
         align: 'center'
       },{
         title: '是否可用',
-        dataIndex: 'useful',
+        dataIndex: 'useful_cn',
         align: 'center'
       },{
         title: '操作',
@@ -43,25 +43,8 @@ class Setting extends React.Component {
         )
       }],
       loading: true,
-      roomList: [{
-        roomNum: 888,
-        type: 2,
-        typeName: '大床房',
-        rPrice: '300',
-        rDiscount: '0.9',
-        status: 1,
-        useful: 1,
-        isDelete: 1,
-      }],
-      roomObj: {
-        roomNum: 0,
-        type: 0,
-        rPrice: '',
-        rDiscount: '',
-        status: 1,
-        useful: 1,
-        isDelete: 1,
-      }
+      roomList: [{],
+      roomObj: {}
     }
     this.getList()
   }
@@ -85,6 +68,8 @@ class Setting extends React.Component {
           if (d.isDelete) {
             d.key = d.roomNum
             d.typeName = d.type === 1 ? '标间' : (d.type === 2 ? '大床房' : '总统套房')
+            d.status_cn = d.status === 0 ? '不可用' : (d.status === 1 ? '可入住' : '正在打扫')
+            d.useful_cn = d.useful === 0 ? '不可用' : '可用'
             details.push(d)
           }
         });
@@ -113,7 +98,7 @@ class Setting extends React.Component {
       } else if (res.code === 1) {
         message.success('success')
       }
-      this.setState({loading: false})
+      this.setState({loading: true})
       setTimeout(() => this.getList())
     })
   }
@@ -196,10 +181,10 @@ class Setting extends React.Component {
         } else if (!roomObj.rDiscount) {
           message.error('请输入实际折扣')
           return true
-        } else if (roomObj.status !== 0 && roomObj.status !== 1 && roomObj.status !== 2) {
+        } else if (!roomObj.status && roomObj.status !== 0) {
           message.error('请选择房间状态')
           return true
-        } else if (roomObj.useful !== 0 && roomObj.useful !== 1) {
+        } else if (!roomObj.useful && roomObj.useful !== 0) {
           message.error('请选择房间是否可用')
           return true
         } else {

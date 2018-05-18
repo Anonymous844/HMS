@@ -40,9 +40,7 @@ class CheckIn extends React.Component {
       }],
       loading: true,
       checkinList: [],
-      checkinObj: {
-
-      }
+      checkinObj: {}
     }
     this.getList()
   }
@@ -94,7 +92,7 @@ class CheckIn extends React.Component {
       } else if (res.code === 1) {
         message.success('success')
       }
-      this.setState({loading: false})
+      this.setState({loading: true})
       setTimeout(() => this.getList())
     })
   }
@@ -121,11 +119,55 @@ class CheckIn extends React.Component {
         <div>
           <div className='mgb5'>
             <label className='pd5'>客户姓名</label>
-            <Input size='small' style={{width: '60%'}} defaultValue={this.state.checkinObj.userName}
+            <Input size='small' style={{width: '60%'}} defaultValue={this.state.checkinObj.userName} disabled={index===undefined?false:true}
                    onChange={(e) => checkinObj.userName = e.target.value}/>
           </div>
+          <div className='mgb5'>
+            <label className='pd5'>房间号码</label>
+            <Input size='small' style={{width: '60%'}} defaultValue={this.state.checkinObj.roomNum}
+                   onChange={(e) => checkinObj.roomNum = e.target.value}/>
+          </div>
+          <div className='mgb5'>
+            <label className='pd5'>入住时间</label>
+            <Input size='small' style={{width: '60%'}} defaultValue={this.state.checkinObj.startTime}
+                   onChange={(e) => checkinObj.startTime = e.target.value}/>
+          </div>
+          <div className='mgb5'>
+            <label className='pd5'>离店时间</label>
+            <Input size='small' style={{width: '60%'}} defaultValue={this.state.checkinObj.endTime}
+                   onChange={(e) => checkinObj.endTime = e.target.value}/>
+          </div>
+          <div className='mgb5'>
+            <label className='pd5'>是否结账</label>
+            <Select size='small' style={{width: '60%'}} defaultValue={this.state.checkinObj.isPaid}
+                   onChange={(value) => checkinObj.isPaid = value}>
+              <Select.Option value={0}>未结账</Select.Option>
+              <Select.Option value={1}>已结账</Select.Option>
+            </Select>
+          </div>
         </div>
-      )
+      ),
+      onOk: () => {
+        if (!checkinObj.userName) {
+          message.error('请输入用户名字')
+          return true
+        } else if (!checkinObj.roomNum) {
+          message.error('请输入房间号码')
+          return true
+        } else if (!checkinObj.startTime) {
+          message.error('请输入入住时间')
+          return true
+        } else if (!checkinObj.endTime) {
+          message.error('请输入离店时间')
+          return true
+        } else if (!checkinObj.isPaid && checkinObj.isPaid !== 0) {
+          message.error('请选择是否结账')
+          return true
+        } else {
+          this.setState({checkinObj: checkinObj})
+        }
+        setTimeout(() => this.updateList())
+      }
     }))
   }
   render () {
