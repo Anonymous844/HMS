@@ -45,26 +45,28 @@ class Booking extends React.Component {
     this.getList()
   }
   getList () {
-    fetch('/booking/details', {
+    fetch('/api/index.php/booking/details', {
       method: 'get',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
     })
+    .then(response => response.json())
     .then(res => {
       if (!res.code) {
         message.error('500 Internal Server Error')
-      } else if (res.code === 0) {
+      } else if (res.code !== 1) {
         message.error(res.code)
-      } else if (res.code === 1) {
+      } else {
         let details = []
         res.details.forEach(d => {
-          if (d.isDelete) {
+          if (d.isDelete === '1') {
             d.key = d.bookingId
-            d.method_cn = d.method === 1 ? '电话预定' : (d.method === 2 ? '总台面约' : (d.method === 3 ? '网上预定' : '领导安排'))
-            d.typeName = d.type === 1 ? '标间': (d.type === 2 ? '大床房' : '总统套房')
-            d.result_cn = d.result === 0 ? '失败' : (d.result === 1 ? '预约中' : '成功')
+            d.method_cn = d.method === '1' ? '电话预定' : (d.method === '2' ? '总台面约' : (d.method === '3' ? '网上预定' : '领导安排'))
+            d.typeName = d.type === '1' ? '标间': (d.type === '2' ? '大床房' : '总统套房')
+            d.result_cn = d.result === '0' ? '失败' : (d.result === '1' ? '预约中' : '成功')
             details.push(d)
           }
         })
@@ -74,22 +76,24 @@ class Booking extends React.Component {
     })
   }
   updateList () {
-    fetch('/booking/details', {
+    fetch('/api/index.php/booking/details', {
       method: 'post',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       },
       body: JSON.stringify(this.state.bookingObj)
     })
+    .then(response => response.json())
     .then(res => {
       if (!res.code) {
         message.error('500 Internal Server Error')
         return false
-      } else if (res.code === 0) {
-        message.error(res.code)
+      } else if (res.code !== 1) {
+        message.error('请重试')
         return false
-      } else if (res.code === 1) {
+      } else {
         message.success('success')
       }
       this.setState({loading: true})
@@ -103,15 +107,15 @@ class Booking extends React.Component {
         <p>确认删除？</p>
       ),
       onOk: () => {
-        let bookingObj = this.state.bookingList(index)
-        bookingObj.isDelete = 0
+        let bookingObj = this.state.bookingList[index]
+        bookingObj.isDelete = '0'
         this.setState({bookingObj: bookingObj})
         setTimeout(() => this.updateList())
       }
     })
   }
   updateFunc (index) {
-    let bookingObj = index === undefined ? {isDelete: 1}: this.state.bookingList[index]
+    let bookingObj = index === undefined ? {isDelete: '1'}: this.state.bookingList[index]
     this.setState({bookingObj: bookingObj})
     setTimeout(() => Modal.confirm({
       title: index === undefined ? '新增' : '修改',
@@ -131,28 +135,28 @@ class Booking extends React.Component {
             <label className='pd5'>预定方式</label>
             <Select size='small' style={{width: '60%'}} defaultValue={this.state.bookingObj.method}
                    onChange={(value) => bookingObj.method = value}>
-              <Select.Option value={1}>电话预定</Select.Option>
-              <Select.Option value={2}>总台面约</Select.Option>
-              <Select.Option value={3}>网上预定</Select.Option>
-              <Select.Option value={4}>领导安排</Select.Option>
+              <Select.Option value='1'>电话预定</Select.Option>
+              <Select.Option value='2'>总台面约</Select.Option>
+              <Select.Option value='3'>网上预定</Select.Option>
+              <Select.Option value='4'>领导安排</Select.Option>
             </Select>
           </div>
           <div className='mgb5'>
             <label className='pd5'>房间类型</label>
             <Select size='small' style={{width: '60%'}} defaultValue={this.state.bookingObj.type}
                    onChange={(value) => bookingObj.type = value}>
-              <Select.Option value={1}>标间</Select.Option>
-              <Select.Option value={2}>大床房</Select.Option>
-              <Select.Option value={3}>总统套房</Select.Option>
+              <Select.Option value='1'>标间</Select.Option>
+              <Select.Option value='2'>大床房</Select.Option>
+              <Select.Option value='3'>总统套房</Select.Option>
             </Select>
           </div>
           <div className='mgb5'>
             <label className='pd5'>预定结果</label>
             <Select size='small' style={{width: '60%'}} defaultValue={this.state.bookingObj.result}
                    onChange={(value) => bookingObj.result = value}>
-              <Select.Option value={0}>失败</Select.Option>
-              <Select.Option value={1}>预约中</Select.Option>
-              <Select.Option value={2}>成功</Select.Option>
+              <Select.Option value='0'>失败</Select.Option>
+              <Select.Option value='1'>预约中</Select.Option>
+              <Select.Option value='2'>成功</Select.Option>
             </Select>
           </div>
         </div>
@@ -170,7 +174,7 @@ class Booking extends React.Component {
         } else if (!bookingObj.type) {
           message.error('请选择房间类型')
           return true
-        } else if (!bookingObj.result && bookingObj.result !== 0) {
+        } else if (!bookingObj.result) {
           message.error('请选择预定结果')
           return true
         } else {

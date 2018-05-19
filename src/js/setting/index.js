@@ -50,26 +50,28 @@ class Setting extends React.Component {
   }
   // 获取房间信息
   getList () {
-    fetch('/setting/details', {
+    fetch('/api/index.php/setting/details', {
       method: 'get',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
     })
+    .then(response => response.json())
     .then(res => {
       if (!res.code) {
         message.error('500 Internal Server Error')
-      } else if (res.code === 0) {
-        message.error(res.code)
-      } else if (res.code === 1) {
+      } else if (res.code !== 1) {
+        message.error('请重新刷新')
+      } else {
         let details = []
         res.details.forEach(d => {
-          if (d.isDelete) {
+          if (d.isDelete === '1') {
             d.key = d.roomNum
-            d.typeName = d.type === 1 ? '标间' : (d.type === 2 ? '大床房' : '总统套房')
-            d.status_cn = d.status === 0 ? '不可用' : (d.status === 1 ? '可入住' : '正在打扫')
-            d.useful_cn = d.useful === 0 ? '不可用' : '可用'
+            d.typeName = d.type === '1' ? '标间' : (d.type === '2' ? '大床房' : '总统套房')
+            d.status_cn = d.status === '0' ? '不可用' : (d.status === '1' ? '可入住' : '正在打扫')
+            d.useful_cn = d.useful === '0' ? '不可用' : '可用'
             details.push(d)
           }
         });
@@ -80,22 +82,24 @@ class Setting extends React.Component {
   }
   // 修改/删除房间信息
   updateList () {
-    fetch('/setting/details', {
+    fetch('/api/index.php/setting/details', {
       method: 'post',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       },
       body: JSON.stringify(this.state.roomObj)
     })
+    .then(response => response.json())
     .then(res => {
       if (!res.code) {
         message.error('500 Internal Server Error')
         return false
-      } else if (res.code === 0) {
-        message.error(res.code)
+      } else if (res.code !== 1) {
+        message.error('请重试')
         return false
-      } else if (res.code === 1) {
+      } else {
         message.success('success')
       }
       this.setState({loading: true})
@@ -111,7 +115,7 @@ class Setting extends React.Component {
       ),
       onOk: () => {
         let roomObj = this.state.roomList[index]
-        roomObj.isDelete = 0
+        roomObj.isDelete = '0'
         this.setState({roomObj: roomObj})
         setTimeout(() => this.updateList())
       }
@@ -119,7 +123,7 @@ class Setting extends React.Component {
   }
   // 修改/新增
   updateFunc (index) {
-    let roomObj = index === undefined ? {isDelete: 1}: this.state.roomList[index]
+    let roomObj = index === undefined ? {isDelete: '1'}: this.state.roomList[index]
     this.setState({roomObj: roomObj})
     setTimeout(() => Modal.confirm({
       title: index === undefined ? '新增' : '修改',
@@ -134,9 +138,9 @@ class Setting extends React.Component {
             <label className='pd5'>房间类型</label>
             <Select size='small' style={{width: '60%'}} defaultValue={this.state.roomObj.type} disabled={index !== undefined}
                    onChange={value => roomObj.type = value}>
-              <Select.Option value={1}>标间</Select.Option>
-              <Select.Option value={2}>大床房</Select.Option>
-              <Select.Option value={3}>总统套房</Select.Option>
+              <Select.Option value='1'>标间</Select.Option>
+              <Select.Option value='2'>大床房</Select.Option>
+              <Select.Option value='3'>总统套房</Select.Option>
             </Select>
           </div>
           <div className='mgb5'>
@@ -153,17 +157,17 @@ class Setting extends React.Component {
             <label className='pd5'>房间状态</label>
             <Select size='small' style={{width: '60%'}} defaultValue={this.state.roomObj.status}
                    onChange={value => roomObj.status = value}>
-              <Select.Option value={0}>不可用</Select.Option>
-              <Select.Option value={1}>可入住</Select.Option>
-              <Select.Option value={2}>正在打扫</Select.Option>
+              <Select.Option value='0'>不可用</Select.Option>
+              <Select.Option value='1'>可入住</Select.Option>
+              <Select.Option value='2'>正在打扫</Select.Option>
             </Select>
           </div>
           <div className='mgb5'>
             <label className='pd5'>是否可用</label>
             <Select size='small' style={{width: '60%'}} defaultValue={this.state.roomObj.useful}
                    onChange={value => roomObj.useful = value}>
-              <Select.Option value={0}>不可用</Select.Option>
-              <Select.Option value={1}>可用</Select.Option>
+              <Select.Option value='0'>不可用</Select.Option>
+              <Select.Option value='1'>可用</Select.Option>
             </Select>
           </div>
         </div>
@@ -181,10 +185,10 @@ class Setting extends React.Component {
         } else if (!roomObj.rDiscount) {
           message.error('请输入实际折扣')
           return true
-        } else if (!roomObj.status && roomObj.status !== 0) {
+        } else if (!roomObj.status) {
           message.error('请选择房间状态')
           return true
-        } else if (!roomObj.useful && roomObj.useful !== 0) {
+        } else if (!roomObj.useful) {
           message.error('请选择房间是否可用')
           return true
         } else {

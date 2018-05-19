@@ -19,28 +19,29 @@ class Login extends React.Component{
       message.error('请输入密码')
       return false
     }
-    fetch('/login', {
+    fetch('/api/index.php/Login/sign_in_pass?username=' + this.state.username + '&password=' + this.state.password, {
       method: 'post',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(this.state)
+        'Accept': 'application/json',  
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
     })
+    .then(response => response.json())
     .then(res => {
       if (!res.code) {
         message.error('500 Internal Server Error')
-        // return false
-      } else if (res.code === 0) {
-        message.error(res.code)
-        // return false
-      } else if (res.code === 1) {
+        return false
+      } else if (res.code !== 1) {
+        message.error('用户名或者密码错误')
+        return false
+      } else {
         message.success('success')
-        // document.cookie = 'loginEnable=true'
-        // this.props.changeState()
+        document.cookie = 'loginEnable=true'
+        this.props.changeState()
       }
-      document.cookie = 'loginEnable=true'
-      this.props.changeState()
+      // document.cookie = 'loginEnable=true'
+      // this.props.changeState()
       // todo 删除上面两行
     })
   }

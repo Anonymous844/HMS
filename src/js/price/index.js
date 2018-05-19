@@ -44,24 +44,26 @@ class Price extends React.Component {
     this.getList()
   }
   getList () {
-    fetch('/price/details', {
+    fetch('/api/index.php/price/details', {
       method: 'get',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
     })
+    .then(response => response.json())
     .then(res => {
       if (!res.code) {
         message.error('500 Internal Server Error')
-      } else if (res.code === 0) {
-        message.error(res.msg)
-      } else if (res.code === 1) {
+      } else if (res.code !== 1) {
+        message.error('请重新刷新')
+      } else {
         let details = res.details
         details.forEach(d => {
           d.key = d.type
           d.timeLeft_cn = d.timeLeft + '秒'
-          d.typeName = d.type === 1 ? '标间' : (d.type === 2 ? '大床房' : '总统套房')
+          d.typeName = d.type === '1' ? '标间' : (d.type === '2' ? '大床房' : '总统套房')
         })
         this.setState({typeList: details})
       }
@@ -69,22 +71,24 @@ class Price extends React.Component {
     })
   }
   updateList () {
-    fetch('/price/details', {
+    fetch('/api/index.php/price/details', {
       method: 'post',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       },
       body: JSON.stringify(this.state.typeObj)
     })
+    .then(response => response.json())
     .then(res => {
       if (!res.code) {
         message.error('500 Internal Server Error')
         return false
-      } else if (res.code === 0) {
-        message.error(res.msg)
+      } else if (res.code !== 1) {
+        message.error('请重试')
         return false
-      } else if (res.code === 1) {
+      } else {
         message.success('success')
       }
       this.setState({loading: true})
@@ -101,9 +105,9 @@ class Price extends React.Component {
           <div className='mgb5'>
             <label className='pd5'>房间类型</label>
             <Select size='small' style={{width: '60%'}} defaultValue={this.state.typeObj.type} disabled>
-              <Select.Option value={1}>标间</Select.Option>
-              <Select.Option value={2}>大床房</Select.Option>
-              <Select.Option value={3}>总统套房</Select.Option>
+              <Select.Option value='1'>标间</Select.Option>
+              <Select.Option value='2'>大床房</Select.Option>
+              <Select.Option value='3'>总统套房</Select.Option>
             </Select>
           </div>
           <div className='mgb5'>

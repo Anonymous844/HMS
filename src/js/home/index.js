@@ -14,9 +14,6 @@ class Home extends React.Component {
     }
     this.getRate()
   }
-  componentDidMount () {
-    this.getBar()
-  }
   getBar () {
     let myChart = echarts.init(document.getElementById('main'))
     let options = {
@@ -47,23 +44,29 @@ class Home extends React.Component {
     myChart.setOption(options)
   }
   getRate () {
-    fetch('/home/rate?year=' + this.state.year, {
+    fetch('/api/index.php/home/rate?year=' + this.state.year, {
       method: 'get',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       },
     })
+    .then(response => response.json())
     .then(res => {
       if (!res.code) {
         message.error('500 Internal Server Error')
-      } else if (res.code === 0) {
-        message.error(res.msg)
-      } else if (res.code === 1) {
-        this.setState({rate: res.rate})
+      } else if (res.code !== 1) {
+        message.error('请重新刷新')
+      } else {
+        let rate = res.rate.replace('[', '').replace(']', '').split(',')
+        for (let x in rate) {
+          rate[x] = parseInt(rate[x])
+        }
+        this.setState({rate: rate})
+        setTimeout(() => this.getBar())
       }
     })
-    setTimeout(() => this.getBar())
   }
   changeYear (value) {
     this.setState({year: value})
@@ -78,8 +81,8 @@ class Home extends React.Component {
             <Option value="2018">2018</Option>
             <Option value="2017">2017</Option>
             <Option value="2016">2016</Option>
-            <Option value="2015">2015</Option>
-            <Option value="2014">2014</Option>
+            {/* <Option value="2015">2015</Option>
+            <Option value="2014">2014</Option> */}
           </Select>
           <div id='main' style={{width: '100%', height: 400}}></div>
         </div>

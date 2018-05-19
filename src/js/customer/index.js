@@ -47,24 +47,26 @@ class Customer extends React.Component {
   }
   // 获取客户信息
   getList () {
-    fetch('/customer/details', {
+    fetch('/api/index.php/customer/details', {
       method: 'get',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
     })
+    .then(response => response.json())
     .then(res => {
       if (!res.code) {
         message.error('500 Internal Server Error')
-      } else if (res.code === 0) {
-        message.error(res.code)
-      } else if (res.code === 1) {
+      } else if (res.code !== 1) {
+        message.error('请重新刷新')
+      } else {
         let details = []
         res.details.forEach(d => {
-          if (d.isDelete) {
+          if (d.isDelete === '1') {
             d.key = d.userId
-            d.gender_cn = d.gender === 0 ? '女性' : '男性'
+            d.gender_cn = d.gender === '0' ? '女性' : '男性'
             details.push(d)
           }
         })
@@ -75,22 +77,24 @@ class Customer extends React.Component {
   }
   // 修改/删除客户信息
   updateList () {
-    fetch('/customer/details', {
+    fetch('/api/index.php/customer/details', {
       method: 'post',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       },
       body: JSON.stringify(this.state.user)
     })
+    .then(response => response.json())
     .then(res => {
       if (!res.code) {
         message.error('500 Internal Server Error')
         return false
-      } else if (res.code === 0) {
-        message.error(res.code)
+      } else if (res.code !== 1) {
+        message.error('请重试')
         return false
-      } else if (res.code === 1) {
+      } else {
         message.success('success')
       }
       this.setState({loading: true})
@@ -106,7 +110,7 @@ class Customer extends React.Component {
       ),
       onOk: () => {
         let user = this.state.userList(index)
-        user.isDelete = 0
+        user.isDelete = '0'
         this.setState({user: user})
         setTimeout(() => this.updateList())
       }
@@ -114,7 +118,7 @@ class Customer extends React.Component {
   }
   // 修改函数
   updateFunc (index) {
-    let user = index === undefined ? {isDelete: 1}: this.state.userList[index]
+    let user = index === undefined ? {isDelete: '1'}: this.state.userList[index]
     this.setState({user: user})
     setTimeout(() => Modal.confirm({
       title: index === undefined ? '新增' : '修改',
@@ -134,8 +138,8 @@ class Customer extends React.Component {
             <label className='pd5'>客户性别</label>
             <Select size='small' style={{width: '60%'}} defaultValue={this.state.user.gender}
                    onChange={(value) => user.gender = value}>
-              <Select.Option value={0}>女</Select.Option>
-              <Select.Option value={1}>男</Select.Option>
+              <Select.Option value='0'>女</Select.Option>
+              <Select.Option value='1'>男</Select.Option>
             </Select>
           </div>
           <div className='mgb5'>

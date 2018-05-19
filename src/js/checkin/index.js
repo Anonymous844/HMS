@@ -46,24 +46,26 @@ class CheckIn extends React.Component {
   }
   // 获取入住信息
   getList () {
-    fetch('/checkin/details', {
+    fetch('/api/index.php/checkin/details', {
       method: 'get',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
     })
+    .then(response => response.json())
     .then(res => {
       if (!res.code) {
         message.error('500 Internal Server Error')
-      } else if (res.code === 0) {
-        message.error(res.code)
-      } else if (res.code === 1) {
+      } else if (res.code !== 1) {
+        message.error('请重新刷新')
+      } else {
         let details = []
         res.details.forEach(d => {
-          if (d.isDelete) {
+          if (d.isDelete === '1') {
             d.key = d.checkId
-            d.isPaid_cn = d.isPaid === 0 ? '未结账' : '已结账'
+            d.isPaid_cn = d.isPaid === '0' ? '未结账' : '已结账'
             details.push(d)
           }
         })
@@ -74,22 +76,24 @@ class CheckIn extends React.Component {
   }
   // 修改/删除入住信息
   updateList () {
-    fetch('/checkin/details', {
+    fetch('/api/index.php/checkin/details', {
       method: 'post',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       },
       body: JSON.stringify(this.state.checkinObj)
     })
+    .then(response => response.json())
     .then(res => {
       if (!res.code) {
         message.error('500 Internal Server Error')
         return false
-      } else if (res.code === 0) {
-        message.error(res.code)
+      } else if (res.code !== 1) {
+        message.error('请重试')
         return false
-      } else if (res.code === 1) {
+      } else {
         message.success('success')
       }
       this.setState({loading: true})
@@ -104,14 +108,14 @@ class CheckIn extends React.Component {
       ),
       onOk: () => {
         let checkinObj = this.state.checkinList[index]
-        checkinObj.isDelete = 0
+        checkinObj.isDelete = '0'
         this.setState({checkinObj: checkinObj})
         setTimeout(() => this.updateList())
       }
     })
   }
   updateFunc (index) {
-    let checkinObj = index === undefined ? {isDelete: 1}: this.state.checkinList[index]
+    let checkinObj = index === undefined ? {isDelete: '1'}: this.state.checkinList[index]
     this.setState({checkinObj: checkinObj})
     setTimeout(() => Modal.confirm({
       title: index === undefined ? '新增' : '修改',
@@ -141,8 +145,8 @@ class CheckIn extends React.Component {
             <label className='pd5'>是否结账</label>
             <Select size='small' style={{width: '60%'}} defaultValue={this.state.checkinObj.isPaid}
                    onChange={(value) => checkinObj.isPaid = value}>
-              <Select.Option value={0}>未结账</Select.Option>
-              <Select.Option value={1}>已结账</Select.Option>
+              <Select.Option value='0'>未结账</Select.Option>
+              <Select.Option value='1'>已结账</Select.Option>
             </Select>
           </div>
         </div>
@@ -160,7 +164,7 @@ class CheckIn extends React.Component {
         } else if (!checkinObj.endTime) {
           message.error('请输入离店时间')
           return true
-        } else if (!checkinObj.isPaid && checkinObj.isPaid !== 0) {
+        } else if (!checkinObj.isPaid) {
           message.error('请选择是否结账')
           return true
         } else {

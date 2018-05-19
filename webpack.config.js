@@ -41,6 +41,9 @@ module.exports = {
         compress: true,
         port: 8033,
         host: "localhost",
-        hot: true
+        hot: true,
+        proxy: {
+            "/api/index.php": "http://localhost:8080"
+        }
     }
 };
