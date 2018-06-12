@@ -51,11 +51,6 @@ class Booking extends React.Component {
   getList () {
     fetch('/api/index.php/booking/details', {
       method: 'get',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
     })
     .then(response => response.json())
     .then(res => {
@@ -82,11 +77,6 @@ class Booking extends React.Component {
   updateList () {
     fetch('/api/index.php/booking/details', {
       method: 'post',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      },
       body: JSON.stringify(this.state.bookingObj)
     })
     .then(response => response.json())

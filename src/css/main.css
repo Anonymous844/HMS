@@ -63,7 +63,7 @@
     border: 1px solid #cccccc;
     border-radius: 3px;
     background-color: #f9f9f9; 
-    padding: 20px;
+    padding: 15px;
 }
 .loginButton{
     width: 100%;
@@ -75,11 +75,15 @@
     color: #ffffff;
     background-color: #269f42;
 }
-.copyright{
+.text-center{
     text-align: center;
 }
-.logout{
+.pull-right{
     float: right;
+}
+.loginBox>a{
+    font-size: 12px;
+    text-decoration: none;
 }
 
 

@@ -46,11 +46,6 @@ class Home extends React.Component {
   getRate () {
     fetch('/api/index.php/home/rate?year=' + this.state.year, {
       method: 'get',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      },
     })
     .then(response => response.json())
     .then(res => {

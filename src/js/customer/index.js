@@ -49,11 +49,6 @@ class Customer extends React.Component {
   getList () {
     fetch('/api/index.php/customer/details', {
       method: 'get',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
     })
     .then(response => response.json())
     .then(res => {
@@ -79,11 +74,6 @@ class Customer extends React.Component {
   updateList () {
     fetch('/api/index.php/customer/details', {
       method: 'post',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      },
       body: JSON.stringify(this.state.user)
     })
     .then(response => response.json())
@@ -174,7 +164,7 @@ class Customer extends React.Component {
       <div className='container'>
         <div className='clearfix'>
           <h1 className='title'>客户管理功能</h1>
-          <Button type='primary' className='add mgr20' onClick={() => this.updateFunc()}><Icon type='plus' />新增</Button>
+          {/* <Button type='primary' className='add mgr20' onClick={() => this.updateFunc()}><Icon type='plus' />新增</Button> */}
         </div>
         <div className='pd20'>
           <Table dataSource={this.state.userList} 

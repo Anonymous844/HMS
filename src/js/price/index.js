@@ -41,6 +41,8 @@ class Price extends React.Component {
       typeList: [],
       typeObj: {}
     }
+  }
+  componentDidMount () {
     this.getList()
   }
   getList () {

@@ -52,11 +52,6 @@ class Setting extends React.Component {
   getList () {
     fetch('/api/index.php/setting/details', {
       method: 'get',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
     })
     .then(response => response.json())
     .then(res => {

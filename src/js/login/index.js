@@ -1,31 +1,33 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Table, Button, Pagination, Icon, Modal, Input, Select, message } from 'antd'
+import RegisterBox from './registerBox'
 
 class Login extends React.Component{
   constructor (props) {
     super(props)
     this.state = {
-      username: '',
-      password: ''
+      nickname: '',
+      password: '',
+      adminEnable: false,
+      visible: false,
+      title: '用户注册'
     }
     this.login = this.login.bind(this)
+    this.showModal = this.showModal.bind(this)
   }
   login () {
-    if (!this.state.username) {
+    if (!this.state.nickname) { 
       message.error('请输入用户名')
       return false
     } else if(!this.state.password) {
       message.error('请输入密码')
       return false
     }
-    fetch('/api/index.php/Login/sign_in_pass?username=' + this.state.username + '&password=' + this.state.password, {
-      method: 'post',
-      headers: {
-        'Accept': 'application/json',  
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
+    let url = ''
+    url = this.state.adminEnable ? '/api/index.php/Login/sign_in_pass?username=' : '/api/index.php/customer/login?nickname='
+    fetch(url + this.state.nickname + '&password=' + this.state.password, {
+      method: 'post'
     })
     .then(response => response.json())
     .then(res => {
@@ -37,26 +39,38 @@ class Login extends React.Component{
         return false
       } else {
         message.success('success')
-        document.cookie = 'loginEnable=true'
+        document.cookie = 'nickname=' + this.state.nickname
         this.props.changeState()
       }
-      // document.cookie = 'loginEnable=true'
-      // this.props.changeState()
-      // todo 删除上面两行
     })
+  }
+  switchState () {
+    this.setState({nickname: ''})
+    this.setState({password: ''})
+    this.setState({adminEnable: !this.state.adminEnable})
+  }
+  showModal () {
+    this.setState({visible: !this.state.visible})
   }
   render() {
     return (
       <div id='loginContainer'>
         <p className='loginTitle'>Sign in to HMS</p>
         <form className='loginBox mgb30'>
-          <strong>username</strong>
-          <Input className='mgt10 mgb15' placeholder='username' onChange={e => this.setState({username: e.target.value})}/>
-          <strong>password</strong>
-          <Input type='password' className='mgt10 mgb15' placeholder='password' onChange={e => this.setState({password: e.target.value})}/>
-          <Button className='loginButton' onClick={this.login}>Sign in</Button>
+          { this.state.adminEnable ?
+          <h2 className='text-center mgb0'>管理员登录</h2> : <h2 className='text-center mgb0'>用户登录</h2> }
+          <strong>用户名</strong>
+          <Input className='mgt10 mgb15' placeholder='用户名' value={this.state.nickname} onChange={e => this.setState({nickname: e.target.value})}/>
+          <strong>密码</strong>
+          <Input type='password' className='mgt10 mgb15' placeholder='密码' value={this.state.password} onChange={e => this.setState({password: e.target.value})}/>
+          <Button className='loginButton mgb10' onClick={this.login}>Sign in</Button>
+          { this.state.adminEnable ? 
+          <a href="javascript:;" onClick={() => this.switchState()}>用户登录</a> : <a href="javascript:;" onClick={() => this.switchState()}>管理员登录</a> }
+          { this.state.adminEnable ?
+          '' : <a style={{float: 'right'}} href='javascript:;' onClick={this.showModal}>注册</a>}
         </form>
-        <p className='copyright'>Contant <a href='https://github.com/Anonymous844'>Anonymous844</a></p>
+        <RegisterBox {...this.state} showModal={this.showModal}/>
+        <p className='text-center'>Contant <a href='https://github.com/Anonymous844'>Anonymous844</a></p>
       </div>
     )
   }

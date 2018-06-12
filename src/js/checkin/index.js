@@ -47,12 +47,7 @@ class CheckIn extends React.Component {
   // 获取入住信息
   getList () {
     fetch('/api/index.php/checkin/details', {
-      method: 'get',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
+      method: 'get'
     })
     .then(response => response.json())
     .then(res => {
@@ -78,11 +73,6 @@ class CheckIn extends React.Component {
   updateList () {
     fetch('/api/index.php/checkin/details', {
       method: 'post',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      },
       body: JSON.stringify(this.state.checkinObj)
     })
     .then(response => response.json())

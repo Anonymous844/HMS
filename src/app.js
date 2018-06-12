@@ -17,27 +17,40 @@ class App extends React.Component {
     super(props)
     this.state = {
       defaultPath: location.pathname,
-      loginEnable: false
+      loginEnable: false,
+      nickname: ''
     }
     this.logout = this.logout.bind(this)
   }
+  componentDidMount () {
+    this.getNickname()
+  }
+  getNickname () {
+    let str = document.cookie
+    str = str.slice(str.indexOf('nickname=') + 9)
+    this.setState({nickname: str})
+  }
   changeIndex (path) {
     this.setState({defaultPath: path})
-    console.log(document.cookie)
   }
   changeState () {
     this.setState({loginEnable: !this.state.loginEnable})
+    this.getNickname()
   }
   logout () {
-    document.cookie = 'loginEnable=false'
-    this.isLogin()
+    let keys = document.cookie.match(/[^ =;]+(?=\=)/g);  
+    if (keys) {  
+      for(var i = keys.length; i--;)  
+        document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString()  
+    }
+    setTimeout(() => this.isLogin())
   }
   isLogin () {
     let str = document.cookie
-    if (str && str === 'loginEnable=false') {
-      this.setState({loginEnable: false})
-    } else if (str && str === 'loginEnable=true') {
+    if (str && str.indexOf('nickname=') > -1) {
       this.setState({loginEnable: true})
+    } else {
+      this.setState({loginEnable: false})
     }
   }
   componentWillMount () {
@@ -56,7 +69,8 @@ class App extends React.Component {
                   <Link to={value.path}>{value.name}</Link>
                 </li>
               ))}
-              <li className='nav-item logout'><a onClick={this.logout}>退出</a></li>
+              <li className='nav-item pull-right'><a onClick={this.logout}>退出</a></li>
+              <li className='nav-item pull-right'><a>{this.state.nickname}</a></li>
             </ul>
             {routes.map((value, index) => (
               <Route exact path={value.path} component={value.component} key={index}/>
