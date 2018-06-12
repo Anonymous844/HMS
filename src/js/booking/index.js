@@ -8,6 +8,10 @@ class Booking extends React.Component {
     super(props)
     this.state = {
       columns: [{
+        title: '订单编号',
+        dataIndex: 'bookingId',
+        align: 'center'
+      },{
         title: '客户名字',
         dataIndex: 'userName',
         align: 'center'

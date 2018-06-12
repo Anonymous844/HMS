@@ -44,14 +44,18 @@
     overflow: hidden;
 }
 /* 登录页 */
-.loginContainer{
+#loginContainer{
     margin: 0 auto;
+    background-color: #28a745;
+    position: relative;
+    padding-bottom: 20px;
+    top: 50px;
 }
 .loginTitle{
     text-align: center;
     font-weight: 300;
     font-size: 24px;
-    padding-top: 100px;
+    padding-top: 50px;
 }
 .loginBox{
     margin: 0 auto;

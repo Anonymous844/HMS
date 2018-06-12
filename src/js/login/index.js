@@ -47,15 +47,15 @@ class Login extends React.Component{
   }
   render() {
     return (
-      <div className='loginContainer'>
+      <div id='loginContainer'>
         <p className='loginTitle'>Sign in to HMS</p>
-        <div className='loginBox mgb30'>
+        <form className='loginBox mgb30'>
           <strong>username</strong>
           <Input className='mgt10 mgb15' placeholder='username' onChange={e => this.setState({username: e.target.value})}/>
           <strong>password</strong>
           <Input type='password' className='mgt10 mgb15' placeholder='password' onChange={e => this.setState({password: e.target.value})}/>
           <Button className='loginButton' onClick={this.login}>Sign in</Button>
-        </div>
+        </form>
         <p className='copyright'>Contant <a href='https://github.com/Anonymous844'>Anonymous844</a></p>
       </div>
     )

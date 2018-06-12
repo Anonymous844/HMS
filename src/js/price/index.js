@@ -62,7 +62,7 @@ class Price extends React.Component {
         let details = res.details
         details.forEach(d => {
           d.key = d.type
-          d.timeLeft_cn = d.timeLeft + '秒'
+          d.timeLeft_cn = d.timeLeft + '/时'
           d.typeName = d.type === '1' ? '标间' : (d.type === '2' ? '大床房' : '总统套房')
         })
         this.setState({typeList: details})

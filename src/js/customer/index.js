@@ -109,7 +109,7 @@ class Customer extends React.Component {
         <p>确认删除？</p>
       ),
       onOk: () => {
-        let user = this.state.userList(index)
+        let user = this.state.userList[index]
         user.isDelete = '0'
         this.setState({user: user})
         setTimeout(() => this.updateList())
