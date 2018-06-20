@@ -72,9 +72,15 @@ class Customer extends React.Component {
   }
   // 修改/删除客户信息
   updateList () {
-    fetch('/api/index.php/customer/details', {
-      method: 'post',
-      body: JSON.stringify(this.state.user)
+    let body = 'userId=' + this.state.user.userId
+              + '&userName=' + this.state.user.userName
+              + '&gender=' + this.state.user.gender
+              + '&age=' + this.state.user.age
+              + '&telNum=' + this.state.user.telNum
+              + '&isDelete=' + this.state.user.isDelete
+              + '&userPwd=' + this.state.user.userPwd
+    fetch('/api/index.php/customer/details?' + body, {
+      method: 'post'
     })
     .then(response => response.json())
     .then(res => {

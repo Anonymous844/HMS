@@ -73,14 +73,16 @@ class Price extends React.Component {
     })
   }
   updateList () {
-    fetch('/api/index.php/price/details', {
+    let body = 'type=' + this.state.typeObj.type 
+              + '&bPrice=' + this.state.typeObj.bPrice 
+              + '&bDiscount=' + this.state.typeObj.bDiscount 
+              + '&timeLeft=' + this.state.typeObj.timeLeft
+    fetch('/api/index.php/price/details?' + body, {
       method: 'post',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify(this.state.typeObj)
     })
     .then(response => response.json())
     .then(res => {

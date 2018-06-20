@@ -14,7 +14,10 @@ class Booking extends React.Component {
       },{
         title: '客户名字',
         dataIndex: 'userName',
-        align: 'center'
+        align: 'center',
+        render: (text, record) => (
+          <a href="javascript:;" onClick={() => this.showUser(record.userId)}>{text}</a>
+        )
       },{
         title: '联系方式',
         dataIndex: 'telNum',
@@ -61,13 +64,11 @@ class Booking extends React.Component {
       } else {
         let details = []
         res.details.forEach(d => {
-          if (d.isDelete === '1') {
-            d.key = d.bookingId
-            d.method_cn = d.method === '1' ? '电话预定' : (d.method === '2' ? '总台面约' : (d.method === '3' ? '网上预定' : '领导安排'))
-            d.typeName = d.type === '1' ? '标间': (d.type === '2' ? '大床房' : '总统套房')
-            d.result_cn = d.result === '0' ? '失败' : (d.result === '1' ? '预约中' : '成功')
-            details.push(d)
-          }
+          d.key = d.bookingId
+          d.method_cn = d.method === '1' ? '电话预定' : (d.method === '2' ? '总台面约' : (d.method === '3' ? '网上预定' : '领导安排'))
+          d.typeName = d.type === '1' ? '标间': (d.type === '2' ? '大床房' : '总统套房')
+          d.result_cn = d.result === '0' ? '失败' : (d.result === '1' ? '预约中' : '成功')
+          details.push(d)
         })
         this.setState({bookingList: details})
       }
@@ -75,9 +76,16 @@ class Booking extends React.Component {
     })
   }
   updateList () {
-    fetch('/api/index.php/booking/details', {
-      method: 'post',
-      body: JSON.stringify(this.state.bookingObj)
+    let body = 'bookingId=' + this.state.bookingObj.bookingId
+              + '&method=' + this.state.bookingObj.method
+              + '&result=' + this.state.bookingObj.result
+              + '&userId=' + this.state.bookingObj.userId
+              + '&userName=' + this.state.bookingObj.userName
+              + '&telNum=' + this.state.bookingObj.telNum
+              + '&type=' + this.state.bookingObj.type
+              + '&isDelete=' + this.state.bookingObj.isDelete
+    fetch('/api/index.php/booking/details?' + body, {
+      method: 'post'
     })
     .then(response => response.json())
     .then(res => {
@@ -117,12 +125,12 @@ class Booking extends React.Component {
         <div>
           <div className='mgb5'>
             <label className='pd5'>客户姓名</label>
-            <Input size='small' style={{width: '60%'}} defaultValue={this.state.bookingObj.userName}
+            <Input size='small' style={{width: '60%'}} defaultValue={this.state.bookingObj.userName} disabled
                    onChange={(e) => bookingObj.userName = e.target.value}/>
           </div>
           <div className='mgb5'>
             <label className='pd5'>联系方式</label>
-            <Input size='small' style={{width: '60%'}} defaultValue={this.state.bookingObj.telNum}
+            <Input size='small' style={{width: '60%'}} defaultValue={this.state.bookingObj.telNum} disabled
                    onChange={(e) => bookingObj.telNum = e.target.value}/>
           </div>
           <div className='mgb5'>
@@ -177,6 +185,22 @@ class Booking extends React.Component {
         setTimeout(() => this.updateList())
       }
     }))
+  }
+  showUser (id) {
+    fetch('/api/index.php/customer/details?userId=' + id, {
+      method: 'get',
+    })
+    .then(response => response.json())
+    .then(res => {
+      if (!res.code) {
+        message.error('500 Internal Server Error')
+      } else if (res.code !== 1) {
+        message.error('请重新刷新')
+      } else {
+        let user = res.details[0]
+        Modal.info()
+      }
+    })
   }
   render () {
     return (

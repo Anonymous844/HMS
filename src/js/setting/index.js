@@ -77,14 +77,19 @@ class Setting extends React.Component {
   }
   // 修改/删除房间信息
   updateList () {
-    fetch('/api/index.php/setting/details', {
+    let body = 'type=' + this.state.roomObj.type
+              + '&roomNum=' + this.state.roomObj.roomNum
+              + '&rPrice=' + this.state.roomObj.rPrice
+              + '&rDiscount=' + this.state.roomObj.rDiscount
+              + '&status=' + this.state.roomObj.status
+              + '&useful=' + this.state.roomObj.useful
+              + '&isDelete=' + this.state.roomObj.isDelete
+    fetch('/api/index.php/setting/details?' + body, {
       method: 'post',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify(this.state.roomObj)
     })
     .then(response => response.json())
     .then(res => {

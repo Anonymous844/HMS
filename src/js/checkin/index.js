@@ -58,11 +58,9 @@ class CheckIn extends React.Component {
       } else {
         let details = []
         res.details.forEach(d => {
-          if (d.isDelete === '1') {
-            d.key = d.checkId
-            d.isPaid_cn = d.isPaid === '0' ? '未结账' : '已结账'
-            details.push(d)
-          }
+          d.key = d.checkId
+          d.isPaid_cn = d.isPaid === '0' ? '未结账' : '已结账'
+          details.push(d)
         })
         this.setState({checkinList: details})
       }
@@ -71,9 +69,21 @@ class CheckIn extends React.Component {
   }
   // 修改/删除入住信息
   updateList () {
-    fetch('/api/index.php/checkin/details', {
+    let body = 'startTime=' + this.state.checkinObj.startTime
+              + '&endTime=' + this.state.checkinObj.endTime
+              + '&userId=' + this.state.checkinObj.userId
+              + '&userName=' + this.state.checkinObj.userName
+              + '&roomNum=' + this.state.checkinObj.roomNum
+              + '&type=' + this.state.checkinObj.type
+              + '&isPaid=' + this.state.checkinObj.isPaid
+              + '&isDelete=' + this.state.checkinObj.isDelete
+              + '&checkId=' + this.state.checkinObj.checkId
+    fetch('/api/index.php/checkin/details?' + body, {
       method: 'post',
-      body: JSON.stringify(this.state.checkinObj)
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
     })
     .then(response => response.json())
     .then(res => {

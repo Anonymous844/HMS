@@ -24,9 +24,11 @@ class Login extends React.Component{
       message.error('请输入密码')
       return false
     }
-    let url = ''
-    url = this.state.adminEnable ? '/api/index.php/Login/sign_in_pass?username=' : '/api/index.php/customer/login?nickname='
-    fetch(url + this.state.nickname + '&password=' + this.state.password, {
+    let urlU = ''
+    let urlP = ''
+    urlU = (this.state.adminEnable ? '/api/index.php/Login/sign_in_pass?username=' : '/api/index.php/customer/login?nickname=') + this.state.nickname
+    urlP = (this.state.adminEnable ? '&password=' : '&userPwd=') + this.state.password
+    fetch(urlU + urlP, {
       method: 'post'
     })
     .then(response => response.json())

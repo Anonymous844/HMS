@@ -47,14 +47,27 @@ class RegisterBox extends React.Component {
       message.error('请输入联系方式')
       return true
     }
-    fetch('/api/index.php/customer/register', {
-      method: 'post',
-      data: JSON.stringify(this.state)
+    let body = 'nickname=' + this.state.nickname
+              + '&userPwd=' + this.state.userPwd
+              + '&userName=' + this.state.userName
+              + '&gender=' + this.state.gender
+              + '&age=' + this.state.age
+              + '&telNum=' + this.state.telNum
+              + '&isDelete=' + this.state.isDelete
+    fetch('/api/index.php/customer/register?' + body, {
+      method: 'post'
     })
     .then(response => response.json())
     .then(res => {
-      console.log(res)
-      this.clear()
+      if (!res.code) {
+        message.error('500 Internal Server Error')
+        return false
+      } else if (res.code !== 1) {
+        message.error('注册失败请重试！')
+        return false
+      } else {
+        message.success('注册成功！')
+      }
     })
   }
   render () {
