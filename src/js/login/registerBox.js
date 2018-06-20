@@ -12,7 +12,11 @@ class RegisterBox extends React.Component {
       gender: '',
       age: '',
       telNum: '',
-      isDelete: '1'
+      isDelete: '1',
+      code: '',
+      buttonText: '发送验证码',
+      buttonEnable: false,
+      codeEnable: true
     }
     this.user = {}
     this.clear = this.clear.bind(this)
@@ -46,6 +50,9 @@ class RegisterBox extends React.Component {
     } else if (!this.state.telNum) {
       message.error('请输入联系方式')
       return true
+    } else if (!this.state.code) {
+      message.error('请输入验证码')
+      return true
     }
     let body = 'nickname=' + this.state.nickname
               + '&userPwd=' + this.state.userPwd
@@ -54,6 +61,7 @@ class RegisterBox extends React.Component {
               + '&age=' + this.state.age
               + '&telNum=' + this.state.telNum
               + '&isDelete=' + this.state.isDelete
+              + '&code=' + this.state.code
     fetch('/api/index.php/customer/register?' + body, {
       method: 'post'
     })
@@ -67,7 +75,33 @@ class RegisterBox extends React.Component {
         return false
       } else {
         message.success('注册成功！')
+        this.props.showModal()
       }
+    })
+  }
+  sendCode () {
+    if (this.state.telNum === '') {
+      message.error('请输入联系方式')
+      return false
+    }
+    let second = 60
+    this.setState({buttonEnable: true})
+    this.setState({codeEnable: false})
+    let index = setInterval(() => {
+      this.setState({buttonText: (second + 'S后重发')})
+      second--
+      if (second === -2) {
+        this.setState({buttonEnable: false})
+        this.setState({buttonText: '发送验证码'})
+        clearInterval(index)
+      }
+    }, 1000)
+    fetch('/api/index.php/Customer/identifying_code?telNum=' + this.state.telNum, {
+      method: 'post'
+    })
+    .then(response => response.json())
+    .then(res => {
+      console.log(res)
     })
   }
   render () {
@@ -113,6 +147,11 @@ class RegisterBox extends React.Component {
             <span style={{lineHeight: '32px'}}>联系方式</span>
             <Input className='pull-right' style={{width: 200}} value={this.state.telNum}
                    onChange={(e) => this.setState({telNum: e.target.value})}/>
+          </div>
+          <div className='clearfix mgb5'>
+            <Button className='pull-right' style={{width: 102}} onClick={() => this.sendCode()} disabled={this.state.buttonEnable}>{this.state.buttonText}</Button>
+            <Input className='pull-right mgr10' style={{width: 88}} placeholder='验证码' value={this.state.code} disabled={this.state.codeEnable}
+                   onChange={(e) => this.setState({code: e.target.value})}/>
           </div>
         </form>
       </Modal>

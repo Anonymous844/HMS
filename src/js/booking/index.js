@@ -47,7 +47,8 @@ class Booking extends React.Component {
       }],
       loading: true,
       bookingList: [],
-      bookingObj: {}
+      bookingObj: {},
+      user: {}
     }
     this.getList()
   }
@@ -198,7 +199,15 @@ class Booking extends React.Component {
         message.error('请重新刷新')
       } else {
         let user = res.details[0]
-        Modal.info()
+        this.setState({user: user})
+        Modal.info({
+          title: '客户信息',
+          content: (
+            <div>
+              <label>姓名：{this.state.user.userName}</label>
+            </div>
+          )
+        })
       }
     })
   }
@@ -207,7 +216,7 @@ class Booking extends React.Component {
       <div className='container'>
         <div className='clearfix'>
           <h1 className='title'>预定信息管理</h1>
-          <Button type='primary' className='add mgr20' onClick={() => this.updateFunc()}><Icon type='plus'/>新增</Button>
+          {/* <Button type='primary' className='add mgr20' onClick={() => this.updateFunc()}><Icon type='plus'/>新增</Button> */}
         </div>
         <div className='pd20'>
           <Table dataSource={this.state.bookingList} 

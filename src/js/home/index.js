@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import echarts from 'echarts'
-import { Select, message } from 'antd'
+import { Select, message, Row, Col } from 'antd'
 const Option = Select.Option
 
 // 业务统计报表（住宿率|柱状图）
@@ -10,9 +10,15 @@ class Home extends React.Component {
     super(props)
     this.state = {
       year: '2018',
-      rate: []
+      rate: [],
+      total: 0,
+      number: 0,
+      useRate: ''
     }
+  }
+  componentDidMount () {
     this.getRate()
+    this.getList()
   }
   getBar () {
     let myChart = echarts.init(document.getElementById('main'))
@@ -67,20 +73,66 @@ class Home extends React.Component {
     this.setState({year: value})
     setTimeout(() => this.getRate())
   }
+  getList () {
+    fetch('/api/index.php/setting/details', {
+      method: 'get',
+    })
+    .then(response => response.json())
+    .then(res => {
+      let number = 0
+      let useRate = ''
+      let total = res.details.length
+      res.details.forEach(v => {
+        if (v.useful === '1') {
+          number++
+        }
+      })
+      useRate = number / total
+      this.setState({total: total})
+      this.setState({number: number})
+      this.setState({useRate: useRate})
+      setTimeout(() => this.getPie())
+    })
+  }
+  getPie () {
+    let myPie = echarts.init(document.getElementById('rate'))
+    let options = {
+      title: {
+        text: '房间可用率',
+        subtext: '实时监测'
+      },
+      tooltip: {
+        formatter: '{a} <br/>{b} : {d}%'
+      },
+      series: [{
+        name: '入住率',
+        type: 'pie',
+        data: [
+          {value: (this.state.useRate), name: '房间可用率'},
+          {value: (1 - this.state.useRate), name: '房间不可用率'}
+        ]
+      }]
+    }
+    myPie.setOption(options)
+  }
   render () {
     return (
       <div className='container'>
         <h1 className='title'>业务统计报表</h1>
-        <div className='pd20'>
-          <Select value={this.state.year} onChange={(value) => this.changeYear(value)} style={{width: 120}}>
-            <Option value="2018">2018</Option>
-            <Option value="2017">2017</Option>
-            <Option value="2016">2016</Option>
-            {/* <Option value="2015">2015</Option>
-            <Option value="2014">2014</Option> */}
-          </Select>
-          <div id='main' style={{width: '100%', height: 400}}></div>
-        </div>
+        <Row className='pd20'>
+          <Col span={12}>
+            <Select value={this.state.year} onChange={(value) => this.changeYear(value)} style={{width: 120}}>
+              <Option value="2018">2018</Option>
+              <Option value="2017">2017</Option>
+              <Option value="2016">2016</Option>
+            </Select>
+            <div id='main' style={{width: '100%', height: 400}}></div>
+          </Col>
+          <Col span={12}>
+            <h2>总房间数：{this.state.total}, 可用房间数：{this.state.number}</h2>
+            <div id='rate' style={{width: '100%', height: 400}}></div>
+          </Col>
+        </Row>
       </div>
     )
   }
