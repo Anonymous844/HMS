@@ -18,7 +18,8 @@ class App extends React.Component {
     this.state = {
       defaultPath: location.pathname,
       loginEnable: false,
-      nickname: ''
+      nickname: '',
+      type: 'a'
     }
     this.logout = this.logout.bind(this)
   }
@@ -33,9 +34,12 @@ class App extends React.Component {
   changeIndex (path) {
     this.setState({defaultPath: path})
   }
-  changeState () {
+  changeState (type) {
     this.setState({loginEnable: !this.state.loginEnable})
     this.getNickname()
+    if (type) {
+      this.setState({type: type})
+    }
   }
   logout () {
     let keys = document.cookie.match(/[^ =;]+(?=\=)/g);  
@@ -43,12 +47,22 @@ class App extends React.Component {
       for(var i = keys.length; i--;)  
         document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString()  
     }
-    setTimeout(() => this.isLogin())
+    setTimeout(() => {
+      this.isLogin()
+      history.pushState(null, '', '/')
+      this.setState({defaultPath: '/'})
+      this.setState({type: 'a'})
+    })
   }
   isLogin () {
     let str = document.cookie
     if (str && str.indexOf('nickname=') > -1) {
       this.setState({loginEnable: true})
+      if (str.indexOf('anickname=') > -1) {
+        this.setState({type: 'a'})
+      } else {
+        this.setState({type: 'c'})
+      }
     } else {
       this.setState({loginEnable: false})
     }
@@ -63,21 +77,21 @@ class App extends React.Component {
         <Router>
           <div>
             <ul className='nav'>
-              {routes.map((value, index) => (
+              {routes.filter(route => route[this.state.type] === true).map((value, index) => (
                 <li className={this.state.defaultPath === value.path ? 'nav-item active' : 'nav-item'} 
                     key={index} onClick={() => this.changeIndex(value.path)}>
                   <Link to={value.path}>{value.name}</Link>
                 </li>
               ))}
               <li className='nav-item pull-right'><a onClick={this.logout}>退出</a></li>
-              <li className='nav-item pull-right'><a>{this.state.nickname}</a></li>
+              <li className='nav-item pull-right'><a>欢迎您，{this.state.nickname}</a></li>
             </ul>
             {routes.map((value, index) => (
               <Route exact path={value.path} component={value.component} key={index}/>
             ))}
           </div>
         </Router>
-        ) : (<Login changeState={() => this.changeState()}/>)}
+        ) : (<Login changeState={(type) => this.changeState(type)} changeIndex={() => this.changeIndex()}/>)}
       </div>
     )
   }

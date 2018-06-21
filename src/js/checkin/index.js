@@ -72,7 +72,6 @@ class CheckIn extends React.Component {
     let body = 'startTime=' + this.state.checkinObj.startTime
               + '&endTime=' + this.state.checkinObj.endTime
               + '&userId=' + this.state.checkinObj.userId
-              + '&userName=' + this.state.checkinObj.userName
               + '&roomNum=' + this.state.checkinObj.roomNum
               + '&type=' + this.state.checkinObj.type
               + '&isPaid=' + this.state.checkinObj.isPaid
@@ -122,9 +121,9 @@ class CheckIn extends React.Component {
       content: (
         <div>
           <div className='mgb5'>
-            <label className='pd5'>客户姓名</label>
-            <Input size='small' style={{width: '60%'}} defaultValue={this.state.checkinObj.userName} disabled={index===undefined?false:true}
-                   onChange={(e) => checkinObj.userName = e.target.value}/>
+            <label className='pd5'>客户ID</label>&nbsp;&nbsp;&nbsp;&nbsp;
+            <Input size='small' style={{width: '60%'}} defaultValue={this.state.checkinObj.userId} disabled={index===undefined?false:true}
+                   onChange={(e) => checkinObj.userId = e.target.value}/>
           </div>
           <div className='mgb5'>
             <label className='pd5'>房间号码</label>
@@ -152,8 +151,8 @@ class CheckIn extends React.Component {
         </div>
       ),
       onOk: () => {
-        if (!checkinObj.userName) {
-          message.error('请输入用户名字')
+        if (!checkinObj.userId) {
+          message.error('请输入客户ID')
           return true
         } else if (!checkinObj.roomNum) {
           message.error('请输入房间号码')

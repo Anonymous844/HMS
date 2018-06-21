@@ -48,12 +48,19 @@ class Booking extends React.Component {
       loading: true,
       bookingList: [],
       bookingObj: {},
-      user: {}
+      user: {},
+      type: history.state.type
     }
-    this.getList()
   }
-  getList () {
-    fetch('/api/index.php/booking/details', {
+  componentDidMount () {
+    if (this.state.type) {
+      this.getList(4)
+    } else {
+      this.getList()
+    }
+  }
+  getList (id = '') {
+    fetch('/api/index.php/booking/details?userId=' + id, {
       method: 'get',
     })
     .then(response => response.json())
@@ -131,7 +138,7 @@ class Booking extends React.Component {
           </div>
           <div className='mgb5'>
             <label className='pd5'>联系方式</label>
-            <Input size='small' style={{width: '60%'}} defaultValue={this.state.bookingObj.telNum} disabled
+            <Input size='small' style={{width: '60%'}} defaultValue={this.state.bookingObj.telNum} disabled={index !== undefined}
                    onChange={(e) => bookingObj.telNum = e.target.value}/>
           </div>
           <div className='mgb5'>
@@ -198,13 +205,17 @@ class Booking extends React.Component {
       } else if (res.code !== 1) {
         message.error('请重新刷新')
       } else {
-        let user = res.details[0]
+        let user = res.details
         this.setState({user: user})
         Modal.info({
           title: '客户信息',
           content: (
             <div>
-              <label>姓名：{this.state.user.userName}</label>
+              <label>客户ID：{this.state.user.userId}</label><br />
+              <label>姓名：{this.state.user.userName}</label><br />
+              <label>电话：{this.state.user.telNum}</label><br />
+              <label>性别：{this.state.user.gender === '0' ? '女性' : '男性'}</label><br />
+              <label>年龄：{this.state.user.age}</label>
             </div>
           )
         })
@@ -216,7 +227,7 @@ class Booking extends React.Component {
       <div className='container'>
         <div className='clearfix'>
           <h1 className='title'>预定信息管理</h1>
-          {/* <Button type='primary' className='add mgr20' onClick={() => this.updateFunc()}><Icon type='plus'/>新增</Button> */}
+          {this.state.type ? <Button type='primary' className='add mgr20' onClick={() => this.updateFunc()}><Icon type='plus'/>新增</Button> : ''}
         </div>
         <div className='pd20'>
           <Table dataSource={this.state.bookingList} 

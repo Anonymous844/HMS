@@ -47,8 +47,14 @@ class Login extends React.Component{
         return false
       } else {
         message.success('success')
-        document.cookie = 'nickname=' + this.state.nickname
-        this.props.changeState()
+        document.cookie = (this.state.adminEnable ? 'a' : 'c') + 'nickname=' + this.state.nickname
+        if (!this.state.adminEnable) {
+          history.pushState({type: 'customer'}, '', '/booking')
+          this.props.changeIndex("/booking")
+          this.props.changeState('c')
+        } else {
+          this.props.changeState()
+        }
       }
     })
   }
@@ -102,8 +108,8 @@ class Login extends React.Component{
         return false
       } else {
         message.success('success')
-        document.cookie = 'nickname=' + this.state.TtelNum
-        this.props.changeState()
+        document.cookie = 'cnickname=' + this.state.TtelNum
+        this.props.changeState('c')
       }
     })
   }

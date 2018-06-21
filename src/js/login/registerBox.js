@@ -29,6 +29,8 @@ class RegisterBox extends React.Component {
     this.setState({gender: ''})
     this.setState({age: ''})
     this.setState({telNum: ''})
+    this.setState({code: ''})
+    this.setState({codeEnable: true})
     setTimeout(() => this.props.showModal())
   }
   register () {
