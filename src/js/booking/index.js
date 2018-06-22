@@ -54,7 +54,7 @@ class Booking extends React.Component {
   }
   componentDidMount () {
     if (this.state.type) {
-      this.getList(4)
+      this.getList(history.state.id)
     } else {
       this.getList()
     }
@@ -107,7 +107,7 @@ class Booking extends React.Component {
         message.success('success')
       }
       this.setState({loading: true})
-      setTimeout(() => this.getList())
+      setTimeout(() => this.getList(history.state.id))
     })
   }
   delFunc (index) {
@@ -125,7 +125,7 @@ class Booking extends React.Component {
     })
   }
   updateFunc (index) {
-    let bookingObj = index === undefined ? {isDelete: '1'}: this.state.bookingList[index]
+    let bookingObj = index === undefined ? {isDelete: '1', userId: history.state.id, userName: history.state.userName, result: '1'}: this.state.bookingList[index]
     this.setState({bookingObj: bookingObj})
     setTimeout(() => Modal.confirm({
       title: index === undefined ? '新增' : '修改',
@@ -133,8 +133,7 @@ class Booking extends React.Component {
         <div>
           <div className='mgb5'>
             <label className='pd5'>客户姓名</label>
-            <Input size='small' style={{width: '60%'}} defaultValue={this.state.bookingObj.userName} disabled
-                   onChange={(e) => bookingObj.userName = e.target.value}/>
+            <Input size='small' style={{width: '60%'}} defaultValue={this.state.bookingObj.userName} disabled/>
           </div>
           <div className='mgb5'>
             <label className='pd5'>联系方式</label>
@@ -160,6 +159,7 @@ class Booking extends React.Component {
               <Select.Option value='3'>总统套房</Select.Option>
             </Select>
           </div>
+          { history.state.type !== 'customer' ?
           <div className='mgb5'>
             <label className='pd5'>预定结果</label>
             <Select size='small' style={{width: '60%'}} defaultValue={this.state.bookingObj.result}
@@ -168,14 +168,12 @@ class Booking extends React.Component {
               <Select.Option value='1'>预约中</Select.Option>
               <Select.Option value='2'>成功</Select.Option>
             </Select>
-          </div>
+          </div> : ''
+          }
         </div>
       ),
       onOk: () => {
-        if (!bookingObj.userName) {
-          message.error('请输入客户姓名')
-          return true
-        } else if (!bookingObj.telNum) {
+        if (!bookingObj.telNum) {
           message.error('请输入联系方式')
           return true
         } else if (!bookingObj.method) {

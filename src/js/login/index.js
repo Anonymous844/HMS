@@ -47,9 +47,9 @@ class Login extends React.Component{
         return false
       } else {
         message.success('success')
-        document.cookie = (this.state.adminEnable ? 'a' : 'c') + 'nickname=' + this.state.nickname
+        document.cookie = (this.state.adminEnable ? 'a' : 'c') + 'nickname=' + (res.data.userName || this.state.nickname)
         if (!this.state.adminEnable) {
-          history.pushState({type: 'customer'}, '', '/booking')
+          history.pushState({type: 'customer', id: res.data.userId, userName: res.data.userName}, '', '/booking')
           this.props.changeIndex("/booking")
           this.props.changeState('c')
         } else {
@@ -108,7 +108,9 @@ class Login extends React.Component{
         return false
       } else {
         message.success('success')
-        document.cookie = 'cnickname=' + this.state.TtelNum
+        history.pushState({type: 'customer', id: res.data.userId, userName: res.data.userName}, '', '/booking')
+        this.props.changeIndex("/booking")
+        document.cookie = 'cnickname=' + res.data.userName
         this.props.changeState('c')
       }
     })

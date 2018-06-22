@@ -34,8 +34,9 @@ class Customer extends React.Component {
         align: 'center',
         render: (text, record, index) => (
           <div>
-            <Button type='primary' className='mgr30' onClick={() => this.updateFunc(index)}><Icon type='edit' />修改</Button>            
-            <Button type='danger' onClick={() => this.delFunc(index)}><Icon type='delete' />删除</Button>
+            <Button type='primary' size='small' className='mgr10' onClick={() => this.updateFunc(index)}><Icon type='edit' />修改</Button>            
+            <Button type='danger' size='small' className='mgr10' onClick={() => this.delFunc(index)}><Icon type='delete' />删除</Button>
+            <Button type='danger' size='small' onClick={() => this.resetPwd(index)}>重置密码</Button>
           </div>
         )
       }],
@@ -164,6 +165,20 @@ class Customer extends React.Component {
         setTimeout(() => this.updateList())
       }
     }))
+  }
+  resetPwd (index) {
+    Modal.confirm({
+      title: '提示',
+      content: (
+        <p>确认重置密码？</p>
+      ),
+      onOk: () => {
+        let user = this.state.userList[index]
+        user.userPwd = '123456'
+        this.setState({user: user})
+        setTimeout(() => this.updateList())
+      }
+    })
   }
   render () {
     return (
