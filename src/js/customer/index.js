@@ -80,6 +80,7 @@ class Customer extends React.Component {
               + '&telNum=' + this.state.user.telNum
               + '&isDelete=' + this.state.user.isDelete
               + '&userPwd=' + this.state.user.userPwd
+              + '&nickname=' + this.state.user.nickname
     fetch('/api/index.php/customer/details?' + body, {
       method: 'post'
     })

@@ -154,7 +154,7 @@ class Login extends React.Component{
           </form>
         </Modal>
         <RegisterBox {...this.state} showModal={this.showModal}/>
-        <p className='text-center'>Contant <a href='https://github.com/Anonymous844'>Anonymous844</a></p>
+        <p className='text-center' style={{color: '#fff'}}>Contant <a href='https://github.com/Anonymous844'>Anonymous844</a></p>
       </div>
     )
   }

@@ -10,6 +10,7 @@ import { hot } from 'react-hot-loader'
 import 'antd/dist/antd.css'
 import './css/main.css'
 import Login from './js/login/index'
+import logo from './logo.png'
 
 
 class App extends React.Component {
@@ -77,6 +78,7 @@ class App extends React.Component {
         <Router>
           <div>
             <ul className='nav'>
+              <li className='nav-item pdt10 mgr20'><img src={logo}/></li>
               {routes.filter(route => route[this.state.type] === true).map((value, index) => (
                 <li className={this.state.defaultPath === value.path ? 'nav-item active' : 'nav-item'} 
                     key={index} onClick={() => this.changeIndex(value.path)}>

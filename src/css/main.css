@@ -33,6 +33,9 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 0 0 3px 3px #ccc;
+    background: url('../cbackground.jpg') no-repeat;
+    background-repeat: repeat-y;
+    background-size: 100%;
 }
 .title{
     padding-left: 20px;
@@ -48,9 +51,11 @@
 /* 登录页 */
 #loginContainer{
     margin: 0 auto;
-    background-color: #28a745;
+    /* background-color: #28a745; */
+    background: url('../background.jpg') no-repeat;
+    background-size: 100%;
     position: relative;
-    padding-bottom: 20px;
+    padding-bottom: 100px;
     top: 50px;
 }
 .loginTitle{
@@ -58,6 +63,7 @@
     font-weight: 300;
     font-size: 24px;
     padding-top: 50px;
+    color: #fff;
 }
 .loginBox{
     margin: 0 auto;

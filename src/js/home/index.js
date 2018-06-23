@@ -19,6 +19,7 @@ class Home extends React.Component {
   componentDidMount () {
     this.getRate()
     this.getList()
+    this.getGauge()
   }
   getBar () {
     let myChart = echarts.init(document.getElementById('main'))
@@ -115,6 +116,26 @@ class Home extends React.Component {
     }
     myPie.setOption(options)
   }
+  getGauge () {
+    let myGauge = echarts.init(document.getElementById('electric'))
+    let options = {
+      tooltip : {
+        formatter: "{a} <br/>{b} : {c}%"
+      },
+      series: [
+          {
+              name: '业务指标',
+              type: 'gauge',
+              detail: {formatter:'{value}%'},
+              data: [{value: 50, name: '用电压力指数'}]
+          }
+      ]
+    }
+    setInterval(function () {
+      options.series[0].data[0].value = (Math.random() * 50).toFixed(2) - 0;
+      myGauge.setOption(options, true);
+    },2000);
+  }
   render () {
     return (
       <div className='container'>
@@ -128,9 +149,13 @@ class Home extends React.Component {
             </Select>
             <div id='main' style={{width: '100%', height: 400}}></div>
           </Col>
-          <Col span={12}>
+          <Col span={6}>
             <h2>总房间数：{this.state.total}, 可用房间数：{this.state.number}</h2>
             <div id='rate' style={{width: '100%', height: 400}}></div>
+          </Col>
+          <Col span={6}>
+            <h2>酒店用电压力指数</h2>
+            <div id='electric' style={{width: '100%', height: 400}}></div>
           </Col>
         </Row>
       </div>
