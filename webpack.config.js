@@ -54,7 +54,11 @@ module.exports = {
         host: "localhost",
         hot: true,
         proxy: {
-            "/api/index.php": "http://localhost:8080"
+            "/api/index.php": {
+                target: "http://localhost:8080",
+                pathRewrite: {"^/api/index.php": ""}
+            }
+            // '/': 'http://localhost:3333'
         }
     }
 };

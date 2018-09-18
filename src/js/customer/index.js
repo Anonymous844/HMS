@@ -48,7 +48,7 @@ class Customer extends React.Component {
   }
   // 获取客户信息
   getList () {
-    fetch('/api/index.php/customer/details', {
+    fetch('/customer/details', {
       method: 'get',
     })
     .then(response => response.json())
@@ -81,7 +81,7 @@ class Customer extends React.Component {
               + '&isDelete=' + this.state.user.isDelete
               + '&userPwd=' + this.state.user.userPwd
               + '&nickname=' + this.state.user.nickname
-    fetch('/api/index.php/customer/details?' + body, {
+    fetch('/customer/details?' + body, {
       method: 'post'
     })
     .then(response => response.json())

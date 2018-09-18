@@ -60,7 +60,7 @@ class Booking extends React.Component {
     }
   }
   getList (id = '') {
-    fetch('/api/index.php/booking/details?userId=' + id, {
+    fetch('/booking/details?userId=' + id, {
       method: 'get',
     })
     .then(response => response.json())
@@ -92,7 +92,7 @@ class Booking extends React.Component {
               + '&telNum=' + this.state.bookingObj.telNum
               + '&type=' + this.state.bookingObj.type
               + '&isDelete=' + this.state.bookingObj.isDelete
-    fetch('/api/index.php/booking/details?' + body, {
+    fetch('/booking/details?' + body, {
       method: 'post'
     })
     .then(response => response.json())
@@ -193,7 +193,7 @@ class Booking extends React.Component {
     }))
   }
   showUser (id) {
-    fetch('/api/index.php/customer/details?userId=' + id, {
+    fetch('/customer/details?userId=' + id, {
       method: 'get',
     })
     .then(response => response.json())

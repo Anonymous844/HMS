@@ -46,7 +46,7 @@ class Price extends React.Component {
     this.getList()
   }
   getList () {
-    fetch('/api/index.php/price/details', {
+    fetch('/price/details', {
       method: 'get',
       headers: {
         'Accept': 'application/json',
@@ -77,7 +77,7 @@ class Price extends React.Component {
               + '&bPrice=' + this.state.typeObj.bPrice 
               + '&bDiscount=' + this.state.typeObj.bDiscount 
               + '&timeLeft=' + this.state.typeObj.timeLeft
-    fetch('/api/index.php/price/details?' + body, {
+    fetch('/price/details?' + body, {
       method: 'post',
       headers: {
         'Accept': 'application/json',

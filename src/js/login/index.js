@@ -32,7 +32,7 @@ class Login extends React.Component{
     }
     let urlU = ''
     let urlP = ''
-    urlU = (this.state.adminEnable ? '/api/index.php/Login/sign_in_pass?username=' : '/api/index.php/customer/login?nickname=') + this.state.nickname
+    urlU = (this.state.adminEnable ? '/Login/sign_in_pass?username=' : '/customer/login?nickname=') + this.state.nickname
     urlP = (this.state.adminEnable ? '&password=' : '&userPwd=') + this.state.password
     fetch(urlU + urlP, {
       method: 'post'
@@ -86,7 +86,7 @@ class Login extends React.Component{
         clearInterval(index)
       }
     }, 1000)
-    fetch('/api/index.php/Customer/identifying_code?telNum=' + this.state.TtelNum, {
+    fetch('/Customer/identifying_code?telNum=' + this.state.TtelNum, {
       method: 'post'
     })
     .then(response => response.json())
@@ -95,7 +95,7 @@ class Login extends React.Component{
     })
   }
   TLogin () {
-    fetch('/api/index.php/Customer/sms_login?telNum=' + this.state.TtelNum + '&code=' + this.state.Tcode, {
+    fetch('/Customer/sms_login?telNum=' + this.state.TtelNum + '&code=' + this.state.Tcode, {
       method: 'post'
     })
     .then(response => response.json())

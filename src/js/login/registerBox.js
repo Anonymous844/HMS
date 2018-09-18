@@ -64,7 +64,7 @@ class RegisterBox extends React.Component {
               + '&telNum=' + this.state.telNum
               + '&isDelete=' + this.state.isDelete
               + '&code=' + this.state.code
-    fetch('/api/index.php/customer/register?' + body, {
+    fetch('/customer/register?' + body, {
       method: 'post'
     })
     .then(response => response.json())
@@ -98,7 +98,7 @@ class RegisterBox extends React.Component {
         clearInterval(index)
       }
     }, 1000)
-    fetch('/api/index.php/Customer/identifying_code?telNum=' + this.state.telNum, {
+    fetch('/Customer/identifying_code?telNum=' + this.state.telNum, {
       method: 'post'
     })
     .then(response => response.json())

@@ -50,7 +50,7 @@ class Setting extends React.Component {
   }
   // 获取房间信息
   getList () {
-    fetch('/api/index.php/setting/details', {
+    fetch('/setting/details', {
       method: 'get',
     })
     .then(response => response.json())
@@ -84,7 +84,7 @@ class Setting extends React.Component {
               + '&status=' + this.state.roomObj.status
               + '&useful=' + this.state.roomObj.useful
               + '&isDelete=' + this.state.roomObj.isDelete
-    fetch('/api/index.php/setting/details?' + body, {
+    fetch('/setting/details?' + body, {
       method: 'post',
       headers: {
         'Accept': 'application/json',

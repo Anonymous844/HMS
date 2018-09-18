@@ -46,7 +46,7 @@ class CheckIn extends React.Component {
   }
   // 获取入住信息
   getList () {
-    fetch('/api/index.php/checkin/details', {
+    fetch('/checkin/details', {
       method: 'get'
     })
     .then(response => response.json())
@@ -77,7 +77,7 @@ class CheckIn extends React.Component {
               + '&isPaid=' + this.state.checkinObj.isPaid
               + '&isDelete=' + this.state.checkinObj.isDelete
               + '&checkId=' + this.state.checkinObj.checkId
-    fetch('/api/index.php/checkin/details?' + body, {
+    fetch('/checkin/details?' + body, {
       method: 'post',
       headers: {
         'Accept': 'application/json',

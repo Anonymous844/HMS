@@ -51,7 +51,7 @@ class Home extends React.Component {
     myChart.setOption(options)
   }
   getRate () {
-    fetch('/api/index.php/home/rate?year=' + this.state.year, {
+    fetch('/home/rate?year=' + this.state.year, {
       method: 'get',
     })
     .then(response => response.json())
@@ -75,7 +75,7 @@ class Home extends React.Component {
     setTimeout(() => this.getRate())
   }
   getList () {
-    fetch('/api/index.php/setting/details', {
+    fetch('/setting/details', {
       method: 'get',
     })
     .then(response => response.json())
