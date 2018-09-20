@@ -30,12 +30,16 @@ class Login extends React.Component{
       message.error('请输入密码')
       return false
     }
-    let urlU = ''
-    let urlP = ''
-    urlU = (this.state.adminEnable ? '/Login/sign_in_pass?username=' : '/customer/login?nickname=') + this.state.nickname
-    urlP = (this.state.adminEnable ? '&password=' : '&userPwd=') + this.state.password
-    fetch(urlU + urlP, {
-      method: 'post'
+    fetch('/customer/login', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        nickname: this.state.nickname,
+        password: this.state.password
+      })
     })
     .then(response => response.json())
     .then(res => {
